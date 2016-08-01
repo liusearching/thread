@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     mProgress.setProgress((int)msg.obj);
                     break;
+                case 2:
+                    mImageview.setImageBitmap((Bitmap)msg.obj);
+                    mProgress.setVisibility(View.INVISIBLE);
+
             }
         }
     };
@@ -57,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
                                    msg2.obj=i*10;
                                    mHandler.sendMessage(msg2);
                                }
+                               Bitmap bitmap=BitmapFactory.decodeResource(getResources(),
+                                       R.drawable.ic_launcher);
+                               Message msgBitmap=mHandler.obtainMessage();
+                               msgBitmap.what=2;
+                               msgBitmap.obj=bitmap;
+                               mHandler.sendMessage(msgBitmap);
                            }
 
                            private void sleep() {
