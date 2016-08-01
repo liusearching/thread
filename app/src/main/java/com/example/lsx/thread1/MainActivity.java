@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +22,14 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            mProgress.setVisibility(View.VISIBLE);
+            switch(msg.what){
+                case 0:
+                    mProgress.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    mProgress.setProgress((int)msg.obj);
+                    break;
+            }
         }
     };
     @Override
@@ -40,7 +48,23 @@ public class MainActivity extends AppCompatActivity {
                            @Override
                            public void run() {
                                Message msg=new Message();
+                               msg.what=0;
                                mHandler.sendMessage(msg);
+                               for(int i=1;i<11;i++){
+                                   sleep();
+                                   Message msg2=new Message();
+                                   msg2.what=1;
+                                   msg2.obj=i*10;
+                                   mHandler.sendMessage(msg2);
+                               }
+                           }
+
+                           private void sleep() {
+                               try {
+                                   Thread.sleep(500);
+                               } catch (InterruptedException e) {
+                                   e.printStackTrace();
+                               }
                            }
                        }
                ).start();
